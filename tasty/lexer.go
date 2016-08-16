@@ -1,29 +1,10 @@
-package lexer
+package tasty
 
-// Lexer
-type Token int  // a lexical token
-const (
-	ILLEGAL Token = iota
-	EOR
-	WS
-	NEWLINE
-
-	KW_TEASPOON
-	KW_TABLESPOON
-	KW_CUP
-	KW_QUART
-	WORD
+import (
+	"bufio"
+	"bytes"
+	"io"
 )
-
-func isWhitespace(ch rune) bool {
-	return ch == ' ' || ch == '\t'
-}
-
-func isLetter(ch rune) bool {
-	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
-}
-
-var eof = rune(0)
 
 // Scanner represents a lexical scanner.
 type Scanner struct {
@@ -69,6 +50,7 @@ func (s *Scanner) scanWhitespace() (tok Token, lit string) {
 
 	return WS, buf.String()
 }
+
 // scanIdent consumes the current rune and all contiguous ident runes.
 func (s *Scanner) scanDigit() (tok Token, lit string) {
 	// Create a buffer and read the current character into it.
@@ -89,7 +71,7 @@ func (s *Scanner) scanDigit() (tok Token, lit string) {
 	}
 
 	// Otherwise return as a regular identifier.
-	return VALUE, buf.String()
+	return INTEGER, buf.String()
 }
 
 // scanIdent consumes the current rune and all contiguous ident runes.
@@ -112,9 +94,9 @@ func (s *Scanner) scanString() (tok Token, lit string) {
 	}
 
 	// If the string matches a keyword then return that keyword.
-	switch strings.ToUpper(buf.String()) {
-	case "t": 
-	    return KW_TEASPOON, buf.String()
+	switch buf.String() {
+	case "t":
+		return KW_TEASPOON, buf.String()
 	case "T":
 		return KW_TABLESPOON, buf.String()
 	case "c":
@@ -127,21 +109,23 @@ func (s *Scanner) scanString() (tok Token, lit string) {
 	return WORD, buf.String()
 }
 
-
-
 // Scan returns the next token and literal value.
 func (s *Scanner) Scan() (tok Token, lit string) {
 	// Read the next rune.
 	ch := s.read()
 
 	// If we see whitespace then consume all contiguous whitespace.
-	// If we see a letter then consume as an ident or reserved word.
+	// If we see a letter then consume as a word or reserved word.
+	// If we see a digit then consume as a number.
 	if isWhitespace(ch) {
 		s.unread()
 		return s.scanWhitespace()
 	} else if isLetter(ch) {
 		s.unread()
-		return s.scanIdent()
+		return s.scanString()
+	} else if isDigit(ch) {
+		s.unread()
+		return s.scanDigit()
 	}
 
 	// Otherwise read the individual character.
@@ -150,6 +134,8 @@ func (s *Scanner) Scan() (tok Token, lit string) {
 		return EOF, ""
 	case '\n':
 		return NEWLINE, string(ch)
+	case '.':
+		return PERIOD, string(ch)
 	}
 
 	return ILLEGAL, string(ch)
