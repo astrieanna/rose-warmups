@@ -43,7 +43,7 @@ func TestParsingIngredientsDoubled(t *testing.T) {
 
 	var p *Parser = NewParser(r)
 	pr, err := p.Parse()
-    if err != nil {
+	if err != nil {
 		t.Error("Got parsing error: ", err)
 		return
 	}

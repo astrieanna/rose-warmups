@@ -1,9 +1,9 @@
 package tasty
 
 import (
-"io"
-"fmt"
-"strconv"
+	"fmt"
+	"io"
+	"strconv"
 )
 
 // Parser represents a parser.
@@ -63,7 +63,7 @@ func (p *Parser) parseNumber() (*float64, error) {
 		if tok != INTEGER {
 			return nil, fmt.Errorf("found %q, expected second half of float", lit)
 		}
-		f, err := strconv.ParseFloat(first_half + "." + lit, 64)
+		f, err := strconv.ParseFloat(first_half+"."+lit, 64)
 		if err != nil {
 			return nil, err
 		} else {
@@ -71,7 +71,7 @@ func (p *Parser) parseNumber() (*float64, error) {
 		}
 	} else {
 		p.unscan()
-		f, err := strconv.ParseFloat(first_half,64)
+		f, err := strconv.ParseFloat(first_half, 64)
 		if err != nil {
 			return nil, err
 		} else {
@@ -99,10 +99,10 @@ func (p *Parser) parseIngredientName() (*string, error) {
 			return name, nil
 		} else if tok != WORD {
 			return nil, fmt.Errorf("found %q, expected word", lit)
-	    } else {
-	    	n := *name + " " + lit
+		} else {
+			n := *name + " " + lit
 			name = &n
-	    }
+		}
 	}
 }
 
@@ -133,7 +133,7 @@ func (p *Parser) Parse() (*Recipe, error) {
 		if err != nil {
 			return nil, err
 		}
-		
+
 		r[*ingredient] = Amount{*value, unit}
 
 		tok, lit = p.scanIgnoreWhitespace()
