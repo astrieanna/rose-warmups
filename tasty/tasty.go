@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/astrieanna/rose-warmups/tasty"
+	"github.com/astrieanna/rose-warmups/tasty/lib"
 	"os"
 )
 
