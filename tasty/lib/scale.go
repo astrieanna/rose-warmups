@@ -1,5 +1,6 @@
 package tasty
 
+// Multiplies each amount in the Recipe by multiple, then normalizes the units.
 func MultiplyRecipe(multiple float64, original Recipe) Recipe {
 	var scaled = make(Recipe)
 	for key, value := range original {
@@ -11,7 +12,8 @@ func MultiplyRecipe(multiple float64, original Recipe) Recipe {
 	return scaled
 }
 
-// Conversions
+// The unit will be upgraded if the amount is at least one whole of a higher unit.
+// ## Conversions
 // 3 t = 1 T
 // 16 T = 1 c
 // 4 c = 1 q

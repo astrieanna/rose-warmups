@@ -106,6 +106,10 @@ func (p *Parser) parseIngredientName() (*string, error) {
 	}
 }
 
+// Parses one entire ingredients list.
+// Expects one ingredient per line.
+// Number Unit IngredientName NewLine
+// INTEGER[PERIOD INTEGER] [WS] UNIT_KW WS INGREDIENT_NAME [WS] NEWLINE
 func (p *Parser) Parse() (*Recipe, error) {
 	var r Recipe = make(Recipe) // we're trying to parse an ingredients list
 	for {

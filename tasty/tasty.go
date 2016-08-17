@@ -1,3 +1,6 @@
+// Read in an ingredients list from a file and double the amounts.
+// Normalize units (supports t, T, c, q)
+// Prints original recipe and doubled version.
 package main
 
 import (

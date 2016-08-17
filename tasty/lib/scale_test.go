@@ -6,6 +6,21 @@ import (
 	"testing"
 )
 
+func ExampleMultiplyRecipe() {
+	original := Recipe{
+		"mayo":        Amount{2, CUP},
+		"brown sugar": Amount{8, TABLESPOON},
+		"cayenne":     Amount{2, TEASPOON},
+	}
+	doubled := MultiplyRecipe(2, original)
+    PrintRecipe(doubled)
+    // Output:
+    //1 c   brown sugar
+    //1.3333333333333333 T   cayenne
+    //1 q   mayo
+
+}
+
 func TestDoubling(t *testing.T) {
 	// Sample Input
 	var original = Recipe{
